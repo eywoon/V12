@@ -270,7 +270,17 @@ public class V12String implements Bag<String>
     private static int fillInOrder( AVLTreeNode<String> tree, String[] a, int pos )
     {
         // HÉR VANTAR
-        return 5;
+        // count er fjöldi sæta í fylkinu
+        int count = 0;
+
+        // return concatInOrder(t.left)+t.val+concatInOrder(t.right);
+
+        if(tree == null) {return 0;}
+        else {
+            fillInOrder(tree.left)+t.val+fillInOrder(tree.right);
+        }
+
+        return count;
     }
 
     // Notkun: V12String p = new V12String();
@@ -282,19 +292,22 @@ public class V12String implements Bag<String>
         tree = null;
     }
 
+    // vantar sixze + 1
     public void add( String x )
     {
         if (x != null) {
             insert(tree, x);
+            size++;
         }
         else System.out.println("virkar ekki");
     }
 
-
+    // tékka fyrst hvort gildið er tilstaðar
     public void remove( String x )
     {
         if(x != null) {
             delete(tree, x);
+            size--;
         }
         else System.out.println("virkar ekki");
     }
@@ -330,9 +343,7 @@ public class V12String implements Bag<String>
         private AVLTreeNode<String> current;
 
 
-        private String s = null;
-
-       //= "abc";  s= "abc";
+       // private String s = null;
 
 
         // Fastayrðing gagna:
@@ -380,6 +391,14 @@ public class V12String implements Bag<String>
     {
         MyIterator it = new MyIterator();
         // HÉR VANTAR
+        // taka inn streng og búa til char fylki sem er í stafrófsrö´
+
+        char[] a = new char[3];
+        int pos = 1;
+
+        int count = fillInOrder(tree,a,pos);
+
+
         String x = it.next();
         boolean k = it.hasNext();
         if (k) {
