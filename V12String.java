@@ -139,6 +139,7 @@ public class V12String implements Bag<String>
     //         hnútur er tiul.  Annars er t1 null.
     private static AVLTreeNode<String> search( AVLTreeNode<String> t, String x )
     {
+        System.out.println("ég for í search");
         if( t==null ) return null;
         int c = x.compareTo(t.val);
         if( c==0 ) return t;
@@ -271,16 +272,14 @@ public class V12String implements Bag<String>
     {
         // HÉR VANTAR
         // count er fjöldi sæta í fylkinu
-        int count = 0;
-
-        // return concatInOrder(t.left)+t.val+concatInOrder(t.right);
+       System.out.println("ég for í fillInOrder");
 
         if(tree == null) {return 0;}
-        else {
-            fillInOrder(tree.left)+t.val+fillInOrder(tree.right);
-        }
+        int left = fillInOrder(tree.left,a,pos);
+        int right =  fillInOrder(tree.right, a, pos+left+1);
+        a[pos+left] = tree.val;
 
-        return count;
+        return right+left+1;
     }
 
     // Notkun: V12String p = new V12String();
@@ -305,7 +304,7 @@ public class V12String implements Bag<String>
     // tékka fyrst hvort gildið er tilstaðar
     public void remove( String x )
     {
-        if(x != null) {
+        if(x != null && contains(x)) {
             delete(tree, x);
             size--;
         }
@@ -314,7 +313,10 @@ public class V12String implements Bag<String>
 
     public boolean contains( String x )
     {
-        if(search(tree,x)== null) {return false; }
+        System.out.println("ég for í contains");
+        AVLTreeNode<String> s = search(tree, x);
+        if(s == null) return false;
+      //  if(search(tree,x)== null) {return false; }
         else 
            return true;  
     }
@@ -331,7 +333,6 @@ public class V12String implements Bag<String>
 
     public String max()
     {
-        // HÉR VANTAR
         return max(tree);
     }
 
@@ -340,8 +341,9 @@ public class V12String implements Bag<String>
     {
         // HÉR VANTAR TILVIKSBREYTUR
         // frumstilla tilviksbreytur hér, t.d. s = null
-        private AVLTreeNode<String> current;
-
+    //    private AVLTreeNode<String> current;
+        private String[] a;
+        private int current;
 
        // private String s = null;
 
@@ -360,7 +362,7 @@ public class V12String implements Bag<String>
         public boolean hasNext()
         {
             // ef current er til, þá er til næsta stak 
-            return current!= null;
+            return current!= a.length;
         } 
 
         // Notkun: String x = it.next();
@@ -383,7 +385,7 @@ public class V12String implements Bag<String>
             }
             
 
-            return "next";
+            return a[current++];
         }
     }
 
@@ -393,17 +395,18 @@ public class V12String implements Bag<String>
         // HÉR VANTAR
         // taka inn streng og búa til char fylki sem er í stafrófsrö´
 
-        char[] a = new char[3];
-        int pos = 1;
+        it.a = new String[size];
+        it.current = 0;
+        fillInOrder(tree, it.a, it.current);
 
-        int count = fillInOrder(tree,a,pos);
+    
 
 
-        String x = it.next();
-        boolean k = it.hasNext();
-        if (k) {
-            System.out.println("blafafafa");
-        }
+       // String x = it.next();
+       // boolean k = it.hasNext();
+     //   if (k) {
+       //     System.out.println("blafafafa");
+       // }
 
 
         // gefa tilviksbreytunum gildi hér
