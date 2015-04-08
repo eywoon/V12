@@ -4,12 +4,11 @@ public class V12String implements Bag<String>
     private AVLTreeNode<String> tree;
     private int size;
     // Fastayrðing gagna:
-    //    HÉR VANTAR
-    // s.s. fastayrðirng fyrir tree og size, loforð um hvað það má uppfylla, ástamd gagnannar þegar
-    // komið er inn í aðgerðu og út úr henni
-    // tala um poka, hluturinn er poki sem inniheldur einhver gili, abstract gildi
-    // í þessu tilviki er einhver concrete útfærsla á þessu tilviki
-    // það er það sem fastayrðing gagna gerir
+
+    // tree er af taginu AVLTreeNode
+    // AVLTreeNode vísar í hlut af taginu AVLTreeNode
+    // tree uppfyllir skilyrði fyrir AVL tré og er poki (multiset) gilda af taginu String
+    // tree hefur stærðina n
 
 
     // Notkun: int h = height(e);
@@ -270,11 +269,8 @@ public class V12String implements Bag<String>
     //         í vaxandi röð (inorder röð).  count er n.
     private static int fillInOrder( AVLTreeNode<String> tree, String[] a, int pos )
     {
-        // HÉR VANTAR
-        // count er fjöldi sæta í fylkinu
-       System.out.println("ég for í fillInOrder");
 
-        if(tree == null) {return 0;}
+        if(tree == null) return 0;
         int left = fillInOrder(tree.left,a,pos);
         int right =  fillInOrder(tree.right, a, pos+left+1);
         a[pos+left] = tree.val;
@@ -286,7 +282,6 @@ public class V12String implements Bag<String>
     // Eftir:  p vísar á nýjan tóman poka gilda af tagi E.
     public V12String()
     {
-        //hér vantar
         size = 0;
         tree = null;
     }
@@ -294,18 +289,18 @@ public class V12String implements Bag<String>
     // vantar sixze + 1
     public void add( String x )
     {
-        if (x != null) {
-            insert(tree, x);
+       if (x != null) {
+            tree = insert(tree, x);
             size++;
         }
-        else System.out.println("virkar ekki");
+        else System.out.println("virkar ekki"); 
     }
 
     // tékka fyrst hvort gildið er tilstaðar
     public void remove( String x )
     {
         if(x != null && contains(x)) {
-            delete(tree, x);
+            tree = delete(tree, x);
             size--;
         }
         else System.out.println("virkar ekki");
@@ -313,12 +308,13 @@ public class V12String implements Bag<String>
 
     public boolean contains( String x )
     {
-        System.out.println("ég for í contains");
         AVLTreeNode<String> s = search(tree, x);
-        if(s == null) return false;
-      //  if(search(tree,x)== null) {return false; }
-        else 
-           return true;  
+        if(s == null) { 
+            return false; 
+        }
+        else { 
+            return true; 
+        }
     }
 
     public int size()
@@ -339,19 +335,16 @@ public class V12String implements Bag<String>
     // Hlutir af tagi MyIterator eru flakkarar yfir poka gilda af tagi E.
     private static class MyIterator implements java.util.Iterator<String>
     {
-        // HÉR VANTAR TILVIKSBREYTUR
-        // frumstilla tilviksbreytur hér, t.d. s = null
-    //    private AVLTreeNode<String> current;
-        private String[] a;
         private int current;
-
-       // private String s = null;
-
+        private String[] a;
 
         // Fastayrðing gagna:
-        //    HÉR VANTAR
+        // a er fylki af strengjum, strengirnir eru í vaxandi röð (stafrófsröð)
+        // current er heiltala sem gefur sæti í fylkinu a[] í flakkinu
+        // a[0] <= current <= a.length
+        // current vísar þá líka til þess hversu mörgum stökum hefur verið hent
+        // úr flakkinu (raðað)
 
-        // láta þetta vera
         public void remove()
         {
             throw new java.lang.UnsupportedOperationException();
@@ -361,7 +354,7 @@ public class V12String implements Bag<String>
         // Eftir:  b er satt þþaa a.m.k. eitt gildi sé eftir í flakkinu.
         public boolean hasNext()
         {
-            // ef current er til, þá er til næsta stak 
+            // athuga hvort current sé orðið jafnt seinasta staki fylkisins
             return current!= a.length;
         } 
 
@@ -372,19 +365,6 @@ public class V12String implements Bag<String>
 	    //         eftir var í flakkinu.
         public String next()
         {
-            // HÉR VANTAR
-
-            try {
-                 if (!hasNext()) {
-                     throw new NoSuchElementException();
-                 }
-            }
-
-            catch (NoSuchElementException ex){
-                System.out.println("þetta er ekki að virka -_-");
-            }
-            
-
             return a[current++];
         }
     }
@@ -392,24 +372,11 @@ public class V12String implements Bag<String>
     public java.util.Iterator<String> iterator()
     {
         MyIterator it = new MyIterator();
-        // HÉR VANTAR
-        // taka inn streng og búa til char fylki sem er í stafrófsrö´
 
-        it.a = new String[size];
+        // tilviksbreytur fá gildi
         it.current = 0;
+        it.a = new String[size];
         fillInOrder(tree, it.a, it.current);
-
-    
-
-
-       // String x = it.next();
-       // boolean k = it.hasNext();
-     //   if (k) {
-       //     System.out.println("blafafafa");
-       // }
-
-
-        // gefa tilviksbreytunum gildi hér
         return it;
     }
 
